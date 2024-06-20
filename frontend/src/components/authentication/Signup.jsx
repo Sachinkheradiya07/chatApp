@@ -34,7 +34,6 @@ export default function Signup() {
     setShowConfirmPassword(!showConfirmPassword);
 
   const validatePassword = (password) => {
-    // Regular expression for password validation
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{6,}$/;
     return passwordRegex.test(password);
   };
@@ -64,7 +63,7 @@ export default function Signup() {
         const result = await response.json();
 
         if (response.ok) {
-          setProfilePicture(result.url); // Make sure this is used correctly in the submission
+          setProfilePicture(result.url);
           console.log(result.url);
         } else {
           throw new Error(result.message || "Failed to upload image");
