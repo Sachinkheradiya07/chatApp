@@ -6,10 +6,7 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Stack,
   Typography,
-  TextField,
-  InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,9 +16,7 @@ import { useHistory } from "react-router-dom";
 
 const SideDrawer = ({ user }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [searchText, setSearchText] = useState("");
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
-
   const history = useHistory();
 
   const handleAvatarClick = (event) => {
@@ -30,10 +25,6 @@ const SideDrawer = ({ user }) => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
   };
 
   const handleProfileOpen = () => {
@@ -57,72 +48,46 @@ const SideDrawer = ({ user }) => {
         justifyContent: "space-between",
         alignItems: "center",
         padding: "20px",
-        backgroundColor: "#f0f0f0",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        backgroundColor: "#f0f0f0", // Background color matching your UI
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Shadow matching your UI
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-        <Tooltip title="Search users" placement="bottom-end">
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={1}
-            sx={{
-              backgroundColor: "#ffffff",
-              color: "#000000",
-              padding: "6px 12px",
-              borderRadius: "4px",
-              cursor: "pointer",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <TextField
-              variant="outlined"
-              size="small"
-              placeholder="Search User"
-              value={searchText}
-              onChange={handleSearchChange}
-              sx={{ ml: 1, width: "200px" }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchIcon sx={{ color: "#000000" }} />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Stack>
-        </Tooltip>
-      </Box>
+      {/* Left Section - Search Users */}
+      <Tooltip title="Search users" placement="bottom-end">
+        <IconButton onClick={() => {}} sx={{ mr: 1 }}>
+          <SearchIcon sx={{ color: "#000000" }} />{" "}
+          {/* Adjust color as needed */}
+          <Typography sx={{ ml: 1, color: "#000000" }}>
+            Search User
+          </Typography>{" "}
+          {/* Adjust color as needed */}
+        </IconButton>
+      </Tooltip>
 
-      <Box
+      {/* Center Section - Chat-Wave */}
+      <Typography
+        variant="h6"
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexGrow: 1,
+          fontWeight: "bold",
+          fontSize: "24px",
+          textAlign: "center",
+          color: "#000000",
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          Chat-Wave
-        </Typography>
-      </Box>
+        {" "}
+        {/* Adjust size and color as needed */}
+        Chat-Wave
+      </Typography>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          flexGrow: 1,
-          justifyContent: "flex-end",
-        }}
-      >
+      {/* Right Section - Avatar, Bell Icon, and Profile Menu */}
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <Avatar
           alt={user?.name || "User Avatar"}
           src={
             user?.picture ||
             "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
           }
-          sx={{ ml: 2, cursor: "pointer", width: 40, height: 40 }}
+          sx={{ cursor: "pointer", width: 40, height: 40, ml: 2 }}
           onClick={handleAvatarClick}
           aria-controls="avatar-menu"
           aria-haspopup="true"
@@ -141,9 +106,10 @@ const SideDrawer = ({ user }) => {
             horizontal: "right",
           }}
         >
+          <MenuItem onClick={handleProfileOpen}>My Profile</MenuItem>
           <MenuItem onClick={logOutHandler}>Logout</MenuItem>
         </Menu>
-        <IconButton sx={{ ml: 2 }}>
+        <IconButton sx={{ ml: 2, color: "#000000" }}>
           <FontAwesomeIcon icon={faBell} />
         </IconButton>
         <ProfileModal
