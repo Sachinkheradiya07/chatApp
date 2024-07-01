@@ -18,7 +18,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import Homepage from "./pages/Homepage";
-import ChatPage from "./pages/ChatPage";
+import ChatPage from "./pages/Chatpage";
 
 function App() {
   return (

@@ -1,7 +1,6 @@
-const wrapAsync = require("../utils/wrapAsync");
-const User = require("../models/userModel");
-const generateToken = require("../utils/generateToken");
-
+const jwt = require("jsonwebtoken");
+const User = require("../models/userModel.js");
+const wrapAsync = require("../utils/wrapAsync.js");
 const protect = wrapAsync(async (req, res, next) => {
   let token;
 
@@ -12,7 +11,8 @@ const protect = wrapAsync(async (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
 
-      const decoded = generateToken.verify(token, process.env.JWT_SECRET);
+      //decodes token id
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       req.user = await User.findById(decoded.id).select("-password");
 

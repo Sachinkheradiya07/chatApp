@@ -2,9 +2,34 @@ const wrapAsync = require("../utils/wrapAsync");
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
 
+//@description     Get or Search all users
+//@route           GET /api/user?search=
+//@access          Public
+const allUsers = wrapAsync(async (req, res) => {
+  const { search } = req.query;
+  console.log("Search Query:", search);
+
+  let keyword = {};
+
+  if (search) {
+    const regex = new RegExp(search, "i");
+    keyword = {
+      $or: [{ name: { $regex: regex } }, { email: { $regex: regex } }],
+    };
+  }
+
+  console.log("Search Keyword:", keyword);
+
+  const users = await User.find(keyword);
+  console.log("Found Users:", users);
+  res.send(users);
+});
+
+//@description     Register new user
+//@route           POST /api/user/
+//@access          Public
 const registerUser = wrapAsync(async (req, res) => {
   const { name, email, password, pic } = req.body;
-  console.log("Request Body:", req.body);
 
   if (!name || !email || !password) {
     res.status(400);
@@ -30,15 +55,19 @@ const registerUser = wrapAsync(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      isAdmin: user.isAdmin,
       pic: user.pic,
       token: generateToken(user._id),
     });
   } else {
     res.status(400);
-    throw new Error("Faild To Create The User");
+    throw new Error("Failed to create user");
   }
 });
 
+//@description     Authenticate the user
+//@route           POST /api/users/login
+//@access          Public
 const authUser = wrapAsync(async (req, res) => {
   const { email, password } = req.body;
 
@@ -49,27 +78,14 @@ const authUser = wrapAsync(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      isAdmin: user.isAdmin,
       pic: user.pic,
       token: generateToken(user._id),
     });
   } else {
     res.status(401);
-    throw new Error("Invalid Email or Password");
+    throw new Error("Invalid email or password");
   }
 });
 
-const allUsers = wrapAsync(async (req, res) => {
-  const keyword = req.query.search
-    ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
-    : {};
-
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
-  res.send(users);
-});
-
-module.exports = { registerUser, authUser, allUsers };
+module.exports = { allUsers, registerUser, authUser };
