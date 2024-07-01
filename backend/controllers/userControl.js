@@ -2,9 +2,8 @@ const wrapAsync = require("../utils/wrapAsync");
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
 
-//@description     Get or Search all users
-//@route           GET /api/user?search=
-//@access          Public
+//Get or Search all users
+
 const allUsers = wrapAsync(async (req, res) => {
   const { search } = req.query;
   console.log("Search Query:", search);
@@ -25,9 +24,8 @@ const allUsers = wrapAsync(async (req, res) => {
   res.send(users);
 });
 
-//@description     Register new user
-//@route           POST /api/user/
-//@access          Public
+// Register new user
+
 const registerUser = wrapAsync(async (req, res) => {
   const { name, email, password, pic } = req.body;
 
@@ -65,9 +63,8 @@ const registerUser = wrapAsync(async (req, res) => {
   }
 });
 
-//@description     Authenticate the user
-//@route           POST /api/users/login
-//@access          Public
+// Authenticate the user
+
 const authUser = wrapAsync(async (req, res) => {
   const { email, password } = req.body;
 

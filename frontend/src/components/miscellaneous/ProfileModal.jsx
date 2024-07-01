@@ -18,7 +18,7 @@ const ProfileModal = ({ user, isOpen, onClose }) => {
   };
 
   const handleClose = () => {
-    onClose(); // Call the onClose function passed from SideDrawer
+    onClose();
   };
 
   return (

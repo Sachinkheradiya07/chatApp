@@ -33,7 +33,6 @@ const MyChats = ({ fetchAgain }) => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchAgain]);
 
   const handleChatClick = (chat) => {

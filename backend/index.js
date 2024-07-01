@@ -18,7 +18,7 @@ async function main() {
     console.log("Connected to DB");
   } catch (error) {
     console.error("Error connecting to DB:", error);
-    process.exit(1); // Exit process on error
+    process.exit(1);
   }
 }
 main().catch((error) => console.log(error));
