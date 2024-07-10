@@ -1,11 +1,14 @@
 import React from "react";
-import { ChatState } from "../context/chatProvider";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import SideDrawer from "../components/miscellaneous/SideDrawer";
-import MyChats from "../components/miscellaneous/MyChats";
+import MyChats from "../components/MyChats";
 import ChatBox from "../components/miscellaneous/ChatBox";
+import { ChatState } from "../context/chatProvider";
 
 const ChatPage = () => {
+  const [fetchAgain, setFetchAgain] = useState(false);
+
   const { user } = ChatState();
 
   if (!user) {
@@ -22,8 +25,10 @@ const ChatPage = () => {
         height="91.5vh"
         padding="10px"
       >
-        {user && <MyChats />}
-        {user && <ChatBox />}
+        {user && <MyChats fetchAgain={fetchAgain} />}
+        {user && (
+          <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+        )}
       </Box>
     </div>
   );

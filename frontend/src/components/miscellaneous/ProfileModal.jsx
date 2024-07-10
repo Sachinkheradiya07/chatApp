@@ -1,11 +1,69 @@
+// import React from "react";
+// import {
+//   IconButton,
+//   Button,
+//   Typography,
+//   Card,
+//   CardMedia,
+//   CardContent,
+//   Dialog,
+//   DialogTitle,
+//   DialogContent,
+//   DialogActions,
+// } from "@mui/material";
+// import VisibilityIcon from "@mui/icons-material/Visibility";
+
+// const ProfileModal = ({ user, isOpen, onClose, onOpen }) => {
+//   return (
+//     <>
+//       <Dialog onClose={onClose} open={isOpen} fullWidth maxWidth="sm">
+//         <DialogTitle style={{ textAlign: "center" }}>{user.name}</DialogTitle>
+//         <DialogContent dividers>
+//           <Card
+//             sx={{
+//               display: "flex",
+//               justifyContent: "center",
+//               alignItems: "center",
+//               flexDirection: "column",
+//             }}
+//           >
+//             <CardMedia
+//               component="img"
+//               sx={{
+//                 width: 150,
+//                 height: 150,
+//                 borderRadius: "50%",
+//                 marginBottom: 2,
+//               }}
+//               image={user.pic}
+//               alt={user.name}
+//             />
+//             <Typography variant="body1" align="center">
+//               Email: {user.email}
+//             </Typography>
+//           </Card>
+//         </DialogContent>
+//         <DialogActions>
+//           <Button onClick={onClose}>Close</Button>
+//         </DialogActions>
+//       </Dialog>
+//       <IconButton
+//         onClick={onOpen}
+//         sx={{ display: "flex", alignItems: "center" }}
+//       >
+//         <VisibilityIcon />
+//       </IconButton>
+//     </>
+//   );
+// };
+
+// export default ProfileModal;
 import React from "react";
 import {
-  IconButton,
   Button,
   Typography,
   Card,
   CardMedia,
-  CardContent,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -13,34 +71,36 @@ import {
 } from "@mui/material";
 
 const ProfileModal = ({ user, isOpen, onClose }) => {
-  const handleOpen = () => {
-    // Handle opening logic if needed
-  };
-
-  const handleClose = () => {
-    onClose();
-  };
-
   return (
-    <Dialog onClose={handleClose} open={isOpen} fullWidth maxWidth="sm">
-      <DialogTitle style={{ textAlign: "center" }}>{user.name}</DialogTitle>
+    <Dialog onClose={onClose} open={isOpen} fullWidth maxWidth="sm">
+      <DialogTitle style={{ textAlign: "center" }}>{user?.name}</DialogTitle>
       <DialogContent dividers>
-        <Card sx={{ display: "flex", justifyContent: "center" }}>
+        <Card
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
           <CardMedia
             component="img"
-            sx={{ width: 150, height: 150, borderRadius: "50%" }}
-            image={user.pic}
-            alt={user.name}
+            sx={{
+              width: 150,
+              height: 150,
+              borderRadius: "50%",
+              marginBottom: 2,
+            }}
+            image={user?.pic}
+            alt={user?.name}
           />
-          <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography variant="body1" align="center">
-              Email: {user.email}
-            </Typography>
-          </CardContent>
+          <Typography variant="body1" align="center">
+            Email: {user?.email}
+          </Typography>
         </Card>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Close</Button>
+        <Button onClick={onClose}>Close</Button>
       </DialogActions>
     </Dialog>
   );
