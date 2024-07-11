@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { ChatState } from "../context/chatProvider";
 import { Box, Typography, IconButton } from "@mui/material";
 import { ArrowBack as ArrowBackIcon } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { getSender, getSenderFull } from "../config/ChatLogic";
+import { ChatState } from "../context/chatProvider";
 import ProfileModal from "../components/miscellaneous/ProfileModal";
+import UpdateGroupChatModal from "../components/miscellaneous/UpdateGroupChatModal";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { selectedChat, setSelectedChat, user } = ChatState();
@@ -58,14 +59,27 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             ) : (
               <>
                 {selectedChat.chatName.toUpperCase()}
-                {/* <UpdateGroupChatModal
+                <UpdateGroupChatModal
                   fetchMessages={fetchAgain}
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
-                /> */}
+                />
               </>
             )}
           </Typography>
+          <Box
+            d="flex"
+            flexDir="column"
+            justifyContent="flex-end"
+            p={3}
+            bg="#E8E8E8"
+            w="100%"
+            h="100%"
+            borderRadius="lg"
+            overflowY="hidden"
+          >
+            {/* message here */}
+          </Box>
         </>
       ) : (
         <Box
