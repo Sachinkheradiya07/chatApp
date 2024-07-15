@@ -7,6 +7,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Signup from "../components/authentication/Signup";
 import Login from "../components/authentication/Login";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -30,6 +31,7 @@ function CustomTabPanel(props) {
 
 export default function Homepage() {
   const history = useHistory();
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
@@ -57,14 +59,13 @@ export default function Homepage() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         minHeight: "100vh",
-        paddingTop: 3,
       }}
     >
       <Box
         sx={{
-          width: "35%",
+          width: isMobile ? "90%" : "35%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -83,12 +84,13 @@ export default function Homepage() {
       </Box>
       <Box
         sx={{
-          width: "35%",
+          width: isMobile ? "90%" : "35%",
           padding: 2,
           backgroundColor: "white",
           borderRadius: 2,
           border: "1px solid",
           borderColor: "grey.300",
+          marginTop: 2,
         }}
       >
         <Tabs
