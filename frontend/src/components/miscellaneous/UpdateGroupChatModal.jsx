@@ -46,7 +46,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setSearchResult(data);
     } catch (error) {
       setLoading(false);
-      // Handle error (e.g., display error message)
     }
   };
 
@@ -74,7 +73,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setRenameLoading(false);
     } catch (error) {
       setRenameLoading(false);
-      // Handle error (e.g., display error message)
     }
     setGroupChatName("");
   };
@@ -104,7 +102,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      // Handle error (e.g., display error message)
     }
   };
 
@@ -134,7 +131,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      // Handle error (e.g., display error message)
     }
   };
 
