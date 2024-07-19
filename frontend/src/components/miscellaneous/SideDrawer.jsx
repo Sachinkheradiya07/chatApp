@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Tooltip,
@@ -12,10 +12,13 @@ import {
   Alert,
   Button,
   CircularProgress,
+  Badge,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -31,9 +34,16 @@ const SideDrawer = () => {
   const [searchError, setSearchError] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
-  const [notificationCount, setNotificationCount] = useState(0);
+  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
 
-  const { setSelectedChat, user, chats, setChats } = ChatState();
+  const {
+    setSelectedChat,
+    user,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
   const history = useHistory();
 
   const toggleDrawer = (open) => () => {
@@ -137,6 +147,24 @@ const SideDrawer = () => {
     }
   };
 
+  const handleNotificationClick = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationClose = () => {
+    setNotificationAnchorEl(null);
+  };
+
+  const handleNotificationRead = (index) => {
+    setNotification((prev) =>
+      prev.filter((_, notificationIndex) => notificationIndex !== index)
+    );
+  };
+
+  useEffect(() => {
+    console.log("Notification updated:", notification);
+  }, [notification]);
+
   return (
     <>
       <Box
@@ -191,14 +219,41 @@ const SideDrawer = () => {
             <MenuItem onClick={handleProfileOpen}>My Profile</MenuItem>
             <MenuItem onClick={logOutHandler}>Logout</MenuItem>
           </Menu>
-          <IconButton sx={{ ml: 2, color: "#000000" }}>
-            <FontAwesomeIcon icon={faBell} />
+          <IconButton
+            sx={{ ml: 2, color: "#000000" }}
+            onClick={handleNotificationClick}
+          >
+            <Badge badgeContent={notification.length} color="error" max={99}>
+              <NotificationsIcon />
+            </Badge>
           </IconButton>
-          {notificationCount > 0 && (
-            <span style={{ marginLeft: 5, color: "red" }}>
-              {notificationCount}
-            </span>
-          )}
+          <Menu
+            id="notification-menu"
+            anchorEl={notificationAnchorEl}
+            open={Boolean(notificationAnchorEl)}
+            onClose={handleNotificationClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            {notification.length === 0 ? (
+              <MenuItem>No new notifications</MenuItem>
+            ) : (
+              <List>
+                {notification.map((notif, index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={notif.message} />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleNotificationRead(index)}
+                    >
+                      Mark as Read
+                    </Button>
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </Menu>
           <ProfileModal
             user={user}
             isOpen={isProfileModalOpen}
@@ -232,22 +287,20 @@ const SideDrawer = () => {
               onClick={handleSearch}
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : "Search"}
+              {loading ? <CircularProgress size={24} /> : "Go"}
             </Button>
           </Box>
-          <Box sx={{ mt: 2 }}>
-            {loading ? (
-              <ChatLoading />
-            ) : (
-              searchResult?.map((user) => (
-                <UserListItem
-                  key={user._id}
-                  user={user}
-                  handleFunction={() => accessChat(user._id)}
-                />
-              ))
-            )}
-          </Box>
+          {loading ? (
+            <ChatLoading />
+          ) : (
+            searchResult.map((user) => (
+              <UserListItem
+                key={user._id}
+                user={user}
+                handleFunction={() => accessChat(user._id)}
+              />
+            ))
+          )}
         </Box>
       </Drawer>
     </>

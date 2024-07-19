@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import {
   FormControl,
@@ -21,6 +21,14 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
+
+  useEffect(() => {
+    // Check if user is already logged in and redirect if needed
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      history.push("/chats");
+    }
+  }, [history]);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -54,7 +62,7 @@ export default function Login() {
       setUser(data);
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      history.push("/chats");
+      window.location.reload(); // Reload the page after successful login
     } catch (error) {
       setErrorMessage("Error occurred: " + error.response.data.message);
       setLoading(false);
@@ -81,17 +89,13 @@ export default function Login() {
         <TextField
           fullWidth
           label="Enter Your Password"
-          placeholder="Enter Your Password"
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  onMouseDown={(event) => event.preventDefault()}
-                >
+                <IconButton onClick={handleClickShowPassword}>
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
@@ -100,22 +104,14 @@ export default function Login() {
         />
       </FormControl>
       <Button
-        type="submit"
         variant="contained"
         color="primary"
-        disabled={loading}
         onClick={submitHandler}
+        disabled={loading}
       >
-        {loading ? <CircularProgress size={24} /> : "Log In"}
+        {loading ? <CircularProgress size={24} /> : "Login"}
       </Button>
-      <Button
-        type="button"
-        variant="contained"
-        color="error"
-        onClick={handleGuestLogin}
-      >
-        Guest User
-      </Button>
+      <Button onClick={handleGuestLogin}>Login as Guest</Button>
     </Stack>
   );
 }

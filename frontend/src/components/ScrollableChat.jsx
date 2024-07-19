@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Avatar, Tooltip } from "@mui/material";
 import ScrollableFeed from "react-scrollable-feed";
 import {
@@ -11,6 +11,15 @@ import { ChatState } from "../context/chatProvider";
 
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
+  const endOfMessagesRef = useRef(null);
+
+  const scrollToBottom = () => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <ScrollableFeed>
@@ -49,6 +58,7 @@ const ScrollableChat = ({ messages }) => {
             </span>
           </div>
         ))}
+      <div ref={endOfMessagesRef} />
     </ScrollableFeed>
   );
 };

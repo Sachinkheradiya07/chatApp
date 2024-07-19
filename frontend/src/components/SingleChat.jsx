@@ -23,7 +23,8 @@ const ENDPOINT = "http://localhost:8080";
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
-  const { selectedChat, setSelectedChat, user } = ChatState();
+  const { selectedChat, setSelectedChat, user, notification, setNotification } =
+    ChatState();
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [profileUser, setProfileUser] = useState(null);
   const [socketConnected, setSocketConnected] = useState(false);
@@ -140,7 +141,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        // notification logic here
+        // notification logic
+        if (!notification.includes(newMessageReceived)) {
+          setNotification([newMessageReceived, ...notification]);
+          setFetchAgain(!fetchAgain);
+          console.log("Notification received:", notification);
+        }
       } else {
         setMessages((prevMessages) => [...prevMessages, newMessageReceived]);
       }

@@ -119,7 +119,7 @@ export default function Signup() {
       setSuccessMessage("Registration Successful!");
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      history.push("/chats");
+      window.location.reload(); // Reload the page after successful signup
     } catch (error) {
       console.error(error);
       setErrorMessage(error.response?.data?.message || "Error Occurred!");
