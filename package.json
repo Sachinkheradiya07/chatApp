@@ -1,24 +1,31 @@
 {
   "name": "chat-app",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start": "node backend/index.js",
-    "server": "nodemon backend/index.js",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
-    "test": "jest",
-    "clean": "rimraf frontend/dist"
-  },
-  "author": "",
-  "license": "ISC",
   "description": "",
+  "main": "backend/index.js",
+  "scripts": {
+    "start": "concurrently \"node backend/index.js\" \"serve -s frontend/dist\"",
+    "server": "nodemon backend/index.js",
+    "build": "npm install --legacy-peer-deps && npm install --legacy-peer-deps --prefix frontend && npm run build --prefix frontend"
+  },
+  "keywords": [
+    "mern",
+    "chat-app"
+  ],
+  "author": "Sachin Kheradiya",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
     "connect-mongo": "^5.1.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
-    "socket.io": "^4.7.5"
+    "nodemon": "^2.0.7",
+    "socket.io": "^4.7.5",
+    "concurrently": "^7.0.0",
+    "serve": "^13.0.0"
   }
 }
