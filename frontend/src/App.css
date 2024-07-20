@@ -1,8 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 .App {
   min-height: 100vh;
   display: flex;
-  background-image: url("./background.jpg");
+  background-image: url("../public/background.jpg");
+  background-size: cover;
+  background-position: center;
+  color: rgba(0, 0, 0, 0.442);
+} */
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  background-image: url("/background.jpg");
   background-size: cover;
   background-position: center;
   color: rgba(0, 0, 0, 0.442);

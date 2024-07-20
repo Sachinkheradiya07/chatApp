@@ -1,14 +1,14 @@
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
-const chats = require("./data/data");
+const path = require("path");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const { notFound, errorHandler } = require("./utils/expressError");
 require("dotenv").config();
 
-const port = process.env.PORT || 8080;
+const app = express();
+const port = process.env.PORT || 8081;
 
 // Connect to MongoDB using Mongoose
 const dbUrl = process.env.ATLASDB_URL;
@@ -26,18 +26,33 @@ main().catch((error) => console.log(error));
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("API is Running");
-});
-
+// Route Handlers
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
+// Serve static files and handle deployment
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  // Serve static files from the 'frontend/dist' directory
+  app.use(express.static(path.join(__dirname1, "frontend", "dist")));
+
+  // Handle all other routes
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "frontend", "dist", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
+
+// Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
 
-// SOCKET IO
+// SOCKET.IO setup
 const server = app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
@@ -62,6 +77,7 @@ io.on("connection", (socket) => {
     socket.join(room);
     console.log(`User joined room ${room}`);
   });
+
   socket.on("typing", (room) => socket.in(room).emit("typing"));
   socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
@@ -75,8 +91,9 @@ io.on("connection", (socket) => {
       socket.in(user._id).emit("message received", newMessageReceived);
     });
   });
-  socket.off("setup", () => {
+
+  socket.on("disconnect", () => {
     console.log("USER DISCONNECTED");
-    socket.leave(userData._id);
+    // Perform any necessary cleanup or notifications here
   });
 });
